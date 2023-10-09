@@ -52,7 +52,6 @@ func main() {
 		IdleTimeout:  cfg.HTTPServer.IdleTimeout,
 	}
 
-	// TODO: run server
 	if err := srv.ListenAndServe(); err != nil {
 		log.Error("failed to start server")
 	}
