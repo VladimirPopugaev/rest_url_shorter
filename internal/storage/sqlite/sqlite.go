@@ -77,5 +77,22 @@ func (s *Storage) GetURL(alias string) (string, error) {
 	return urlFromDB, nil
 }
 
-// TODO: написать метод, который удаляет урлы из бд
-// func (s *Storage) DeleteURL(alias string) error {}
+func (s *Storage) DeleteURL(alias string) (int64, error) {
+	const op = "storage.sqlite.DeleteURL"
+
+	stmt, err := s.db.Prepare("DELETE FROM url WHERE alias = ?")
+	if err != nil {
+		return 0, fmt.Errorf("%s %w", op, err)
+	}
+
+	execRes, err := stmt.Exec(alias)
+	if err != nil {
+		return 0, fmt.Errorf("%s %w", op, err)
+	}
+	affectedRows, err := execRes.RowsAffected()
+	if err != nil {
+		return 0, fmt.Errorf("%s %w", op, err)
+	}
+
+	return affectedRows, nil
+}
