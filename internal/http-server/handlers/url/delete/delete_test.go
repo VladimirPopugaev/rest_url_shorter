@@ -33,10 +33,8 @@ func TestSaveHandler(t *testing.T) {
 	}
 
 	for _, tt := range cases {
-		//tt := tt
 
 		t.Run(tt.name, func(t *testing.T) {
-			//t.Parallel()
 			urlDeleterMock := mocks.NewURLDeleter(t)
 
 			if tt.respError == "" || tt.mockError != nil {
@@ -69,23 +67,6 @@ func TestSaveHandler(t *testing.T) {
 			require.NoError(t, err)
 
 			require.Equal(t, tt.affectedRows, response.AffectedRows)
-
-			/*handler := del.New(slogdiscard.NewDiscardLogger(), urlDeleterMock)
-
-			req, err := http.NewRequest(http.MethodDelete, "/"+tt.alias, nil)
-			require.NoError(t, err)
-
-			rr := httptest.NewRecorder()
-			handler.ServeHTTP(rr, req)
-
-			require.Equal(t, rr.Code, http.StatusOK)
-
-			body := rr.Body.String()
-
-			var resp del.Response
-			require.NoError(t, json.Unmarshal([]byte(body), &resp))
-
-			require.Equal(t, tt.affectedRows, resp.AffectedRows)*/
 		})
 	}
 }
