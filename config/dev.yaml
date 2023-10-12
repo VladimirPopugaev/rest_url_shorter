@@ -1,0 +1,8 @@
+env: "dev"
+storage_path: "./storage.db"
+http_server:
+  address: ":8080"
+  timeout: 6s
+  idle_timeout: 60s
+  user: "admin"
+  password: "admin"

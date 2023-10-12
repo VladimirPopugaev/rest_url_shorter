@@ -24,9 +24,13 @@ const (
 
 func main() {
 	cfg := config.MustLoad()
-	_ = cfg
 
 	log := setupLogger(cfg.Env)
+
+	log.Info("Starting server",
+		slog.String("address", cfg.Address),
+		slog.String("env", cfg.Env),
+	)
 
 	log.Debug("Debug messages are enabled")
 

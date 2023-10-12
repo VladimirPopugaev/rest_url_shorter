@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  url-shorter:
+    container_name: url-shorter
+    ports:
+      - "8081:8080"
+    build: .
+    environment:
+      - CONFIG_PATH=config/dev.yaml
