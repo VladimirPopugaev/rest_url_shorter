@@ -27,7 +27,7 @@ type ConnectionDB struct {
 	Password          string `yaml:"password" env-required:"true"`
 	DBName            string `yaml:"db_name" env-required:"true"`
 	SSLMode           string `yaml:"sslmode" env-default:"disable"`
-	Address           string `yaml:"host" env-default:"localhost:5432"`
+	Address           string `yaml:"address" env-default:"localhost:5432"`
 	MaxPoolConnection int    `yaml:"max_pool_conn" env-default:"5"`
 }
 

@@ -11,6 +11,5 @@ connection_db:
   password: "admin"
   db_name: "url_short_db"
   sslmode: "disable"
-  host: "postgres_container"
-  port: "5432"
+  address: "postgres_container:5432"
   max_pool_conn: 5

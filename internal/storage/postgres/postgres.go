@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/pressly/goose/v3"
 	"log"
+	"time"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
@@ -17,6 +18,10 @@ type Storage struct {
 	db *sqlx.DB
 }
 
+const (
+	healthcheckCount = 5
+)
+
 func New(cfgDB config.ConnectionDB) (*Storage, error) {
 	const op = "storage.postgres.New"
 
@@ -27,10 +32,11 @@ func New(cfgDB config.ConnectionDB) (*Storage, error) {
 	}
 
 	// healthcheck
-	// TODO: add multiply healthcheck attempts (постгрес долго подключается)
-	err = db.Ping()
+	//TODO: add multiply healthcheck attempts (постгрес долго подключается)
+	err = tryPingConnection(db, healthcheckCount)
+	//err = db.Ping()
 	if err != nil {
-		return nil, fmt.Errorf("%s: Ping is error: %w", op, err)
+		return nil, fmt.Errorf("%s: Ping is error: %w db_url=%s", op, err, genURLFromConfig(cfgDB))
 	}
 
 	// make migrations
@@ -40,6 +46,21 @@ func New(cfgDB config.ConnectionDB) (*Storage, error) {
 	}
 
 	return &Storage{db: db}, nil
+}
+
+func tryPingConnection(db *sqlx.DB, count int) error {
+	var err error
+	for count > 0 {
+		err = db.Ping()
+		if err != nil {
+			count--
+			time.Sleep(1 * time.Second)
+		} else {
+			return nil
+		}
+	}
+
+	return err
 }
 
 func genURLFromConfig(cfg config.ConnectionDB) string {
