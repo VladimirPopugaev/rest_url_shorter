@@ -35,5 +35,8 @@ COPY --from=builder /app/myapp ./
 # Copy config files from previous stage
 COPY --from=builder /app/config ./config/
 
+# Copy migrations files from pervious stage
+COPY --from=builder /app/migrations ./migrations
+
 # Set the entry point for the container
 CMD ["./myapp"]

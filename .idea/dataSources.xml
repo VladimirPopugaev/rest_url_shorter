@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlite:C:\Users\vladimirp\GolandProjects\rest_url_shorter\storage\storage.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="url_short_db@localhost" uuid="aa3581ae-58cc-4ed8-bcae-6a61a6574794">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/url_short_db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

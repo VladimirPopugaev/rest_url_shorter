@@ -27,6 +27,7 @@ func New(cfgDB config.ConnectionDB) (*Storage, error) {
 	}
 
 	// healthcheck
+	// TODO: add multiply healthcheck attempts (постгрес долго подключается)
 	err = db.Ping()
 	if err != nil {
 		return nil, fmt.Errorf("%s: Ping is error: %w", op, err)

@@ -60,8 +60,6 @@ func main() {
 
 	router.Get("/{alias}", redirect.New(log, storage))
 
-	log.Info("Starting server", slog.String("address", cfg.HTTPServer.Address))
-
 	srv := &http.Server{
 		Addr:         cfg.HTTPServer.Address,
 		Handler:      router,

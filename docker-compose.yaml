@@ -7,6 +7,10 @@ services:
     build: .
     environment:
       - CONFIG_PATH=config/dev.yaml
+    depends_on:
+      - postgres
+    networks:
+      - url_shorter_network
 
   postgres:
     container_name: postgres_container
@@ -14,12 +18,18 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres:/data/postgres
+      - ./pg_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=admin
       - POSTGRES_DB=url_short_db
     restart: unless-stopped
+    networks:
+      - url_shorter_network
 
 volumes:
   postgres:
+
+networks:
+  url_shorter_network:
+    driver: bridge
