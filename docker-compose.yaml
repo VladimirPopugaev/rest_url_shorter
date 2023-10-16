@@ -1,9 +1,25 @@
 version: "3.9"
 services:
   url-shorter:
-    container_name: url-shorter
+    container_name: url-shorter_container
     ports:
       - "8081:8080"
     build: .
     environment:
       - CONFIG_PATH=config/dev.yaml
+
+  postgres:
+    container_name: postgres_container
+    image: postgres:16.0
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/data/postgres
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=url_short_db
+    restart: unless-stopped
+
+volumes:
+  postgres:

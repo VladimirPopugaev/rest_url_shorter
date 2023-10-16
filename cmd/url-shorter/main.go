@@ -7,13 +7,15 @@ import (
 	"net/http"
 	"os"
 
-	"rest_url_shorter/internal/config"
 	del "rest_url_shorter/internal/http-server/handlers/url/delete"
 	"rest_url_shorter/internal/http-server/handlers/url/redirect"
 	"rest_url_shorter/internal/http-server/handlers/url/save"
 	mwlogger "rest_url_shorter/internal/http-server/middleware/logger"
+	"rest_url_shorter/internal/storage/postgres"
+
+	"rest_url_shorter/internal/config"
 	"rest_url_shorter/internal/lib/logger/sl"
-	"rest_url_shorter/internal/storage/sqlite"
+	_ "rest_url_shorter/migrations"
 )
 
 const (
@@ -28,18 +30,18 @@ func main() {
 	log := setupLogger(cfg.Env)
 
 	log.Info("Starting server",
-		slog.String("address", cfg.Address),
+		slog.String("address", cfg.HTTPServer.Address),
 		slog.String("env", cfg.Env),
 	)
 
 	log.Debug("Debug messages are enabled")
 
-	storage, err := sqlite.New(cfg.StoragePath)
+	storage, err := postgres.New(cfg.ConnectionDB)
 	if err != nil {
 		log.Error("failed to init storage", sl.Err(err))
 		os.Exit(1)
 	}
-	_ = storage
+	log.Debug("Storage started")
 
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
@@ -58,10 +60,10 @@ func main() {
 
 	router.Get("/{alias}", redirect.New(log, storage))
 
-	log.Info("Starting server", slog.String("address", cfg.Address))
+	log.Info("Starting server", slog.String("address", cfg.HTTPServer.Address))
 
 	srv := &http.Server{
-		Addr:         cfg.Address,
+		Addr:         cfg.HTTPServer.Address,
 		Handler:      router,
 		ReadTimeout:  cfg.HTTPServer.Timeout,
 		WriteTimeout: cfg.HTTPServer.Timeout,

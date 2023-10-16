@@ -6,3 +6,11 @@ http_server:
   idle_timeout: 60s
   user: "admin"
   password: "admin"
+connection_db:
+  username: "admin"
+  password: "admin"
+  db_name: "url_short_db"
+  sslmode: "disable"
+  address: "localhost:5432"
+  max_pool_conn: 5
+

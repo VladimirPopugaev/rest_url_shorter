@@ -15,6 +15,6 @@ This service is written in Golang and provides the user with the ability to use 
 - Golang
 - Testify, mockery, gofakeit, httpexpect
 - Chi (router)
-- SQLite3
+- _**Postgres (pgx, sqlx, goose)**_ OR _SQLite3_
 - BasicAuth
 - Docker (Compose)
