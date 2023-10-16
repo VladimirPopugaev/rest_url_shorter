@@ -32,9 +32,7 @@ func New(cfgDB config.ConnectionDB) (*Storage, error) {
 	}
 
 	// healthcheck
-	//TODO: add multiply healthcheck attempts (постгрес долго подключается)
 	err = tryPingConnection(db, healthcheckCount)
-	//err = db.Ping()
 	if err != nil {
 		return nil, fmt.Errorf("%s: Ping is error: %w db_url=%s", op, err, genURLFromConfig(cfgDB))
 	}
