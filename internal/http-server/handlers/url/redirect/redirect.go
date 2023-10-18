@@ -30,6 +30,7 @@ func New(log *slog.Logger, urlGetter URLGetter) http.HandlerFunc {
 		if alias == "" {
 			log.Info("url is required field")
 
+			w.WriteHeader(http.StatusBadRequest)
 			render.JSON(w, r, resp.Error("url is required field"))
 			return
 		}
@@ -38,12 +39,14 @@ func New(log *slog.Logger, urlGetter URLGetter) http.HandlerFunc {
 		if errors.Is(err, storage.ErrURLNotFound) {
 			log.Info("url not found", slog.String("alias", alias))
 
+			w.WriteHeader(http.StatusNotFound)
 			render.JSON(w, r, resp.Error("url not found"))
 			return
 		}
 		if err != nil {
 			log.Error("failed to get url", sl.Err(err))
 
+			w.WriteHeader(http.StatusBadRequest)
 			render.JSON(w, r, resp.Error("failed to get url"))
 			return
 		}

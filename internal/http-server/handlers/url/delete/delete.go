@@ -33,6 +33,7 @@ func New(log *slog.Logger, urlDeleter URLDeleter) http.HandlerFunc {
 		if alias == "" {
 			log.Info("url is required field")
 
+			w.WriteHeader(http.StatusBadRequest)
 			render.JSON(w, r, resp.Error("url is required field"))
 			return
 		}
@@ -45,6 +46,7 @@ func New(log *slog.Logger, urlDeleter URLDeleter) http.HandlerFunc {
 				slog.String("alias", alias),
 			)
 
+			w.WriteHeader(http.StatusBadRequest)
 			render.JSON(w, r, resp.Error("failed to delete url"))
 		}
 
